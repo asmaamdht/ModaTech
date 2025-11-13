@@ -3,8 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { I18nManager } from 'react-native';
 import en from '@/src/locales/en.json';
-import ar from '@/src/locales/ar.json';
-
+import ar from '@/src/locales/ar.json'
 
 const getStoredLanguage = async () : Promise <string> => {
   try{
