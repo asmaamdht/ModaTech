@@ -1,12 +1,10 @@
 import React, { useState } from 'react'
-import {
-  Text,
-} from 'react-native';
+
 import { SafeAreaView } from 'react-native-safe-area-context';
-import InputField from '@/src/components/InputField';
 import StyleProfile from './StyleProfile';
-import CustomBottomNav from '@/src/components/CustomBottomNav';
 import StyledText from '@/src/components/StyledText';
+import StyledButton from '@/src/components/StyledButton';
+import StyledInput from '@/src/components/StyledInput';
 
 
 const Profile: React.FC = () => {
@@ -25,32 +23,32 @@ const Profile: React.FC = () => {
     <SafeAreaView style={StyleProfile.container}>
 
       <StyledText title='User Profile' />
-      <InputField
+      <StyledInput
         value={userInfo.firstName}
         editable={false}
       />
-      <InputField
+      <StyledInput
         value={userInfo.lastName}
         editable={false}
 
       />
-      <InputField
+      <StyledInput
         value={userInfo.email}
         editable={false}
 
       />
-      <InputField
+      <StyledInput
         value={userInfo.phone}
         editable={false}
 
       />
-      <InputField
+      <StyledInput
         value={userInfo.address}
         editable={false}
 
       />
 
-      <CustomBottomNav value="Logout" onPress={() => { }} />
+      <StyledButton value="Logout" onPress={() => { }} />
 
     </SafeAreaView>
   );

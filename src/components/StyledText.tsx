@@ -3,10 +3,10 @@ import {
   Text, StyleSheet
 } from "react-native";
 
-type StyleTextType = {
+type StyledTextType = {
   title: string,
 }
-const StyledText: React.FC<StyleTextType> = ({ title }) => {
+const StyledText: React.FC<StyledTextType> = ({ title }) => {
   return (
     <Text style={StyleTitle.title}>{title}</Text>
   );
@@ -17,17 +17,11 @@ export default StyledText;
 
 
 const StyleTitle = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 20,
-    backgroundColor: '#ffffffff',
-  },
   title: {
     fontSize: 20,
     fontWeight: '400',
     marginBottom: 35,
   },
-
 });
 
 

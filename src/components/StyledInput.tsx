@@ -1,11 +1,11 @@
 import React from "react";
 import { StyleSheet, TextInput } from 'react-native';
 
-type InputFieldType = {
+type StyledInputType = {
   value: string,
   editable: boolean,
 }
-const InputField: React.FC<InputFieldType> = ({ value, editable }) => {
+const StyledInput: React.FC<StyledInputType> = ({ value, editable }) => {
   return (
     <TextInput
       style={styles.input}
@@ -15,7 +15,7 @@ const InputField: React.FC<InputFieldType> = ({ value, editable }) => {
   );
 };
 
-export default InputField;
+export default StyledInput;
 
 
 const styles = StyleSheet.create({
