@@ -1,8 +1,8 @@
 //import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ROUTES } from "@/src/constants/Routes";
-import Login from "@/src/features/Login/Login";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
+import AuthNavigator from "./AuthNavigator";
 import MainNavigator from "./MainNavigator";
 
 const Stack = createNativeStackNavigator();
@@ -17,9 +17,13 @@ const Router = () => {
     <>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {isUser ? (
-          <Stack.Screen name={ROUTES.LOGIN} component={Login} />
+          <Stack.Screen name={ROUTES.AUTH} component={AuthNavigator} />
         ) : (
-          <Stack.Screen name={ROUTES.STACK} component={MainNavigator} />
+          <Stack.Screen
+            name={ROUTES.STACK}
+            component={MainNavigator}
+            options={{ headerShown: false }}
+          />
         )}
       </Stack.Navigator>
     </>
