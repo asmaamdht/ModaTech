@@ -1,15 +1,14 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { View, Text } from "react-native";
+
+
 
 const CustomBottomNav = () => {
   return (
-    <View style={styles.container}>
+    <View>
       <Text>CustomBottomNav</Text>
     </View>
-  );
+  )
 };
 
 export default CustomBottomNav;
-const styles = StyleSheet.create({
-  container: {},
-});

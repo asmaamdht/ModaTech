@@ -1,12 +1,27 @@
 import React from "react";
-import { Text, View } from "react-native";
+import {
+  Text, StyleSheet
+} from "react-native";
 
-const StyledText = () => {
+type StyledTextType = {
+  title: string,
+}
+const StyledText: React.FC<StyledTextType> = ({ title }) => {
   return (
-    <View>
-      <Text>StyledText</Text>
-    </View>
+    <Text style={StyleTitle.title}>{title}</Text>
   );
 };
 
 export default StyledText;
+
+
+
+const StyleTitle = StyleSheet.create({
+  title: {
+    fontSize: 20,
+    fontWeight: '400',
+    marginBottom: 35,
+  },
+});
+
+

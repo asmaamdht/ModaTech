@@ -1,12 +1,30 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { StyleSheet, TextInput } from 'react-native';
 
-const StyledInput = () => {
+type StyledInputType = {
+  value: string,
+  editable: boolean,
+}
+const StyledInput: React.FC<StyledInputType> = ({ value, editable }) => {
   return (
-    <View>
-      <Text>StyledInput</Text>
-    </View>
+    <TextInput
+      style={styles.input}
+      value={value}
+      editable={editable}
+    />
   );
 };
 
 export default StyledInput;
+
+
+const styles = StyleSheet.create({
+  input: {
+    backgroundColor: '#f3f6ffff',
+    borderRadius: 10,
+    padding: 20,
+    marginBottom: 15,
+    color: '#555',
+  },
+
+});
