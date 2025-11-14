@@ -5,5 +5,6 @@ export const ROUTES = {
   PRODUCT_DETAISL: "ProductDetails",
   CART: "Cart",
   PROFILE: "Profile",
-  STACK: "Home",
+  STACK: "Stack",
+  MAIN_NAV: "MainNavigator",
 };

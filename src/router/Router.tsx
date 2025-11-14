@@ -20,7 +20,7 @@ const Router = () => {
           <Stack.Screen name={ROUTES.AUTH} component={AuthNavigator} />
         ) : (
           <Stack.Screen
-            name={ROUTES.STACK}
+            name={ROUTES.MAIN_NAV}
             component={MainNavigator}
             options={{ headerShown: false }}
           />

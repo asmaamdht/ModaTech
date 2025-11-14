@@ -41,6 +41,8 @@
   "arabic": "Arabic",
   "theme": "Theme",
   "light": "Light",
-  "dark": "Dark"
+  "dark": "Dark",
+  "Cart": "Cart",
+  "Home": "Home",
+  "Profile": "Profile"
 }
-
