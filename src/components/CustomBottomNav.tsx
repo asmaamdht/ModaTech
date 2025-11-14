@@ -1,33 +1,14 @@
 import React from "react";
-import { GestureResponderEvent, StyleSheet, Text, TouchableOpacity } from "react-native";
-
-type CustomBottomType = {
-  value: string;
-  onPress: (event: GestureResponderEvent) => void;
-};
+import { View, Text } from "react-native";
 
 
 
-const CustomBottomNav: React.FC<CustomBottomType> = ({ value, onPress }) => {
+const CustomBottomNav = () => {
   return (
-    <TouchableOpacity style={styles.btn} onPress={onPress} activeOpacity={0.7} >
-      <Text style={styles.btnText}>{value}</Text>
-    </TouchableOpacity>
-  );
+    <View>
+      <Text>CustomBottomNav</Text>
+    </View>
+  )
 };
 
 export default CustomBottomNav;
-const styles = StyleSheet.create({
-  btn: {
-    backgroundColor: '#fe6db2',
-    marginTop: 40,
-    borderRadius: 10,
-    paddingVertical: 14,
-    alignItems: 'center',
-  },
-  btnText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-});

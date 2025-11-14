@@ -6,12 +6,6 @@ const StyleProfile = StyleSheet.create({
         paddingHorizontal: 20,
         backgroundColor: '#ffffffff',
     },
-    title: {
-        fontSize: 20,
-        fontWeight: '400',
-        marginBottom: 35,
-    },
-
 });
 
 
