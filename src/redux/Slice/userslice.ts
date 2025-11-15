@@ -14,8 +14,8 @@ type setuserdatapayload={
     username:string;
     id:number;
 }
-const userslice=createSlice({
-    name:'user',
+const userslice = createSlice({
+    name: 'user',
     initialState,
     reducers:{
         setuserdata:(state,action:PayloadAction<setuserdatapayload>)=>{
@@ -23,13 +23,13 @@ const userslice=createSlice({
         state.username=action.payload.username;
         state.id=action.payload.id;
         },
-        clearuserdata :(state)=>{
+        clearuserdata: (state) => {
             state.token = null;
             state.username = null;
             state.id = null;
         },
     },
-    
+
 });
 export const { setuserdata, clearuserdata } = userslice.actions;
 export default userslice.reducer;
