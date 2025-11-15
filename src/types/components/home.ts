@@ -6,6 +6,10 @@ export interface Product {
   price: number;
   image: string;
   category: string;
+  rating?:{
+    rate:number;
+    count:number;
+  }
 }
 
 
@@ -28,3 +32,22 @@ export interface HomeHeaderProps {
     navigate: (screen: string) => void;
   };
 }
+
+
+export interface ProductsState {
+  products: Product[];
+  loading: boolean;
+  error: string | null;
+}
+
+export interface MostPopularProps {
+  onPressItem?: (item: any) => void;
+  isRTL: boolean;
+}
+
+export interface LowestPriceProps {
+  onPressItem?: (item: any) => void;
+  isRTL: boolean;
+}
+
+

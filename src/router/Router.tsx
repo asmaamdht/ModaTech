@@ -5,6 +5,12 @@ import React from "react";
 import AuthNavigator from "./AuthNavigator";
 import MainNavigator from "./MainNavigator";
 import { ThemeProvider } from "../contexts/ThemeContext";
+import { Provider } from "react-redux";
+import { store } from "../redux/store";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
+
 
 const Stack = createNativeStackNavigator();
 const Router = () => {
@@ -17,8 +23,10 @@ const Router = () => {
   return (
     <>
      <ThemeProvider>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {isUser ? (
+      <Provider store={store}>
+       <QueryClientProvider client={queryClient}>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          {isUser ? (
           <Stack.Screen name={ROUTES.AUTH} component={AuthNavigator} />
         ) : (
           <Stack.Screen
@@ -27,7 +35,9 @@ const Router = () => {
             options={{ headerShown: false }}
           />
         )}
-      </Stack.Navigator>
+          </Stack.Navigator>
+         </QueryClientProvider>
+        </Provider>
       </ThemeProvider>
     </>
   );

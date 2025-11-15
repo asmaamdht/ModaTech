@@ -48,5 +48,7 @@
   "all": "All",
   "moreDetail": "more detail",
   "search":"Search...",
-  "discover":"Discover"
+  "discover":"Discover",
+  "mostPopular":"Most Popular",
+  "lowestPrice":"Lowest Price"
 }

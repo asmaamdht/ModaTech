@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {View,ScrollView,StyleSheet,ActivityIndicator,Text,ViewStyle,} from "react-native";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/src/contexts/ThemeContext";
@@ -9,46 +9,33 @@ import {widthPercentageToDP as wp,heightPercentageToDP as hp} from "react-native
 import Search from "./Search";
 import AppBar from "./AppBar";
 import { Product } from "@/src/types/components/home";
+import { useDispatch, useSelector } from "react-redux";
+import  {fetchProducts}  from "@/src/redux/Slice/productSlice";
+import { RootState, AppDispatch } from "@/src/redux/store";
+import { useState } from "react";
+import MostPopular from "./MostPopular";
+import LowestPrice from "./LowestPrices";
 
 
 const Home = ({ navigation }: any) => {
- 
+  const dispatch = useDispatch<AppDispatch>();
+  const { products, loading, error } = useSelector((state: RootState) => state.products);
+  
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
   const isRTL = i18n.language === "ar";
 
-  const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<Category>("all");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    dispatch(fetchProducts());
+  }, [dispatch]);
 
   useEffect(() => {
     filterProducts();
   }, [selectedCategory, products, searchText]);
-
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const response = await fetch("https://fakestoreapi.com/products");
-      if (!response.ok) {
-        throw new Error("Failed to fetch products");
-      }
-      const data = await response.json();
-      setProducts(data);
-    } catch (err) {
-      setError(t("failedToLoadProducts"));
-      console.error("Error fetching products:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const filterProducts = () => {
     let filtered: Product[] = [];
@@ -82,7 +69,10 @@ const Home = ({ navigation }: any) => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <ScrollView 
+      style={[styles.container, { backgroundColor: colors.background }]}
+      showsVerticalScrollIndicator={false}
+    >
       <AppBar navigation={navigation} />
       
        <View style={{ width: '100%' }}>
@@ -136,13 +126,25 @@ const Home = ({ navigation }: any) => {
           ))}
         </ScrollView>
       )}
-    </View>
+
+      <MostPopular 
+        onPressItem={handleProductPress}
+        isRTL={isRTL}
+      />
+
+      <LowestPrice 
+        onPressItem={handleProductPress}
+        isRTL={isRTL}
+      />
+
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginBottom:60
   } as ViewStyle,
   scrollView: {
     flex: 1,
