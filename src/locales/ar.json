@@ -48,5 +48,7 @@
   "all": "الكل",
   "moreDetail": "المزيد من التفاصيل",
   "search":"البحث...",
-  "discover":"استكشف"
+  "discover":"استكشف",
+  "mostPopular":"الأشهر",
+  "lowestPrice":"الأقل سعر"
 }
