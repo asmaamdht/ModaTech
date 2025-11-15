@@ -1,51 +1,35 @@
 import CartItem from '@/src/components/CartItem';
 import { useTheme } from '@/src/contexts/ThemeContext';
-import { ICart } from '@/src/types/components/cart';
-import { Product } from '@/src/types/components/home';
-import React, { useEffect, useState } from "react";
+import { fetchCart } from '@/src/redux/Slice/cartSlice';
+import { fetchProducts } from '@/src/redux/Slice/productSlice';
+import { AppDispatch, RootState } from '@/src/redux/store';
+import React, { useEffect } from "react";
 import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { useDispatch, useSelector } from 'react-redux';
 
 const Cart = () => {
   const { colors } = useTheme();
-  const [products, setProducts] = useState<Product[]>([]);
-  const [cartItems, setCartItems] = useState<ICart[]>([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch<AppDispatch>();
+  const { cartItems, loading: cartLoading } = useSelector((state: RootState) => state.cart);
+  const { products, loading: productsLoading } = useSelector((state: RootState) => state.products);
   useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const productsRes = await fetch('https://fakestoreapi.com/products');
-      const productsData: Product[] = await productsRes.json();
-      setProducts(productsData);
+    dispatch(fetchProducts()).unwrap().then(() => {
+      dispatch(fetchCart());
+    });
+  }, [dispatch]);
 
-      const cartRes = await fetch('https://fakestoreapi.com/carts/1'); 
-      const cartData = await cartRes.json();
+  const loading = cartLoading || productsLoading;
 
-      const mappedCart: ICart[] = cartData.products.map((p: { productId: number; quantity: number }) => {
-        const product = productsData.find(prod => prod.id === p.productId);
-        if (!product) return null;
-        return { ...product, quantity: p.quantity, type: "order" } as ICart;
-      }).filter(Boolean) as ICart[];
-
-      setCartItems(mappedCart);
-      setLoading(false);
-    } catch (error) {
-      console.error(error);
-      setLoading(false);
-    }
-  };
-
-  fetchData();
-}, []);
 
   return (
     <ScrollView style={{ backgroundColor: colors.background }} contentContainerStyle={styles.container}>
       <View style={styles.headerContainer}>
-        <View style={[styles.iconContainer, { backgroundColor: colors.buttonText }]}>
+        <View style={[styles.iconContainer, { backgroundColor: colors.headerView }]}>
           <Ionicons name={"arrow-back-outline"} color={colors.primary} size={24} />
         </View>
         <Text style={[styles.headerText, { color: colors.text }]}>Cart</Text>
@@ -53,14 +37,14 @@ const Cart = () => {
       </View>
       {loading ? (
         <ActivityIndicator size="large" color={colors.primary} style={{ marginTop: 20 }} />
-    ) : (
-      cartItems.map(cart => (
-        <CartItem
-          key={cart.id}
-          cart={cart}
-        />
-      ))
-    )}
+      ) : (
+        cartItems.map(cart => (
+          <CartItem
+            key={cart.id}
+            cart={cart}
+          />
+        ))
+      )}
     </ScrollView>
   );
 };

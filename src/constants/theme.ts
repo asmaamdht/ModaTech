@@ -23,7 +23,8 @@ export const Colors = {
     success: '#34C759',
     badgeBackground: '#e15184',
     badgeText: 'white',
-    headerView:"#ffffffff"
+    headerView:"#ffffffff",
+    cart:'#fff'
   },
   dark: {
     text: '#ECEDEE',
@@ -49,7 +50,8 @@ export const Colors = {
     success: '#34C759',
     badgeBackground: 'white',
     badgeText: '#e15184',
-    headerView:"#404040"
+    headerView:"#404040",
+    cart: "#2d2d2d"
   },
 };
 
