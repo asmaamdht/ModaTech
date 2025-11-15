@@ -13,7 +13,7 @@ const CartItem: React.FC<Props> = ({ cart }) => {
   const { colors } = useTheme();
 
   return (
-    <View style={[styles.card, { backgroundColor: colors.buttonText }]}>
+    <View style={[styles.card, { backgroundColor: colors.cart }]}>
   
       <View style={[styles.imageContainer , {backgroundColor: colors.surface}]}>
         <Image source={{ uri: cart.image }} style={styles.image} />
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   image: {
     width: wp('20%'),
     height: wp('20%'),
-    resizeMode: 'cover',
+    resizeMode: 'contain',
     alignSelf:"center",
   },
   infoContainer: {

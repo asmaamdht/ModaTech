@@ -39,9 +39,16 @@ const Login: React.FC = () => {
       }
     },
     onSuccess: async (res) => {
+      const usersRes = await axios.get("https://fakestoreapi.com/users");
+
+      const currentUser = usersRes.data.find(
+        (u: any) => u.username === res.username
+      );
+
       const userdata = {
         token: res.token,
-        username: res.username
+        username: res.username,
+        id: currentUser.id,
       }
       await AsyncStorage.setItem('userdata', JSON.stringify(userdata));
       dispatch(setuserdata(userdata));
