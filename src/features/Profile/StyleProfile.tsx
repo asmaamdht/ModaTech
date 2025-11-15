@@ -5,6 +5,7 @@ const StyleProfile = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 20,
         backgroundColor: '#ffffffff',
+        paddingTop: 50,
     },
 });
 

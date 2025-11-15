@@ -1,13 +1,14 @@
 //import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ROUTES } from "@/src/constants/Routes";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from "react";
+import { useSelector } from "react-redux";
+import { ThemeProvider } from "../contexts/ThemeContext";
+import Loaduserdata from "../features/Login/Loaduserdata";
+import { RootState } from "../redux/store";
 import AuthNavigator from "./AuthNavigator";
 import MainNavigator from "./MainNavigator";
-import { ThemeProvider } from "../contexts/ThemeContext";
-import { Provider } from "react-redux";
-import { store } from "../redux/store";
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const queryClient = new QueryClient();
 
@@ -19,26 +20,32 @@ const Router = () => {
   //   return JSON.parse(res);
   // };
 
-  const isUser = false;
+  // const isUser = false;
+  const user = useSelector((state: RootState) => state.user);
+
   return (
     <>
-     <ThemeProvider>
-      <Provider store={store}>
-       <QueryClientProvider client={queryClient}>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {isUser ? (
-          <Stack.Screen name={ROUTES.AUTH} component={AuthNavigator} />
-        ) : (
-          <Stack.Screen
-            name={ROUTES.MAIN_NAV}
-            component={MainNavigator}
-            options={{ headerShown: false }}
-          />
-        )}
+      < ThemeProvider >
+
+        <QueryClientProvider client={queryClient}>
+          <Loaduserdata />
+
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            {user.token ? (
+              <Stack.Screen
+                name={ROUTES.MAIN_NAV}
+                component={MainNavigator}
+                options={{ headerShown: false }}
+              />
+            ) : (
+              <Stack.Screen name={ROUTES.AUTH} component={AuthNavigator} />
+
+            )}
           </Stack.Navigator>
-         </QueryClientProvider>
-        </Provider>
-      </ThemeProvider>
+
+        </QueryClientProvider >
+      </ThemeProvider >
+
     </>
   );
 };

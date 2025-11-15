@@ -1,11 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
-import { SafeAreaView } from 'react-native-safe-area-context';
-import StyleProfile from './StyleProfile';
-import StyledText from '@/src/components/StyledText';
 import StyledButton from '@/src/components/StyledButton';
 import StyledInput from '@/src/components/StyledInput';
-
+import StyledText from '@/src/components/StyledText';
+import { ROUTES } from '@/src/constants/Routes';
+import { clearuserdata } from '@/src/redux/Slice/userslice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StackActions } from '@react-navigation/native';
+import { useNavigation } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useDispatch } from 'react-redux';
+import StyleProfile from './StyleProfile';
 
 const Profile: React.FC = () => {
 
@@ -16,7 +21,16 @@ const Profile: React.FC = () => {
     phone: '01032547856',
     address: 'KomHamada',
   })
-  console.log(setUserInfo);
+
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+
+  const handleLogout = async () => {
+    dispatch(clearuserdata());
+    await AsyncStorage.removeItem("userdata");
+    navigation.dispatch(StackActions.replace(ROUTES.LOGIN));
+  }
 
 
   return (
@@ -48,10 +62,14 @@ const Profile: React.FC = () => {
 
       />
 
-      <StyledButton value="Logout" onPress={() => { }} />
+      <StyledButton value="Logout" onPress={handleLogout} />
 
     </SafeAreaView>
   );
 };
 
 export default Profile;
+function dispatch(clearuserdata: any) {
+  throw new Error('Function not implemented.');
+}
+
