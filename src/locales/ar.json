@@ -8,7 +8,7 @@
   "pleaseEnterBoth": "يرجى إدخال اسم المستخدم وكلمة المرور",
   "loginFailed": "فشل تسجيل الدخول",
   "logout": "تسجيل الخروج",
-  "hello": "مرحباً",
+  "hello": " مرحباً {{name}}",
   "productDetails": "تفاصيل المنتج",
   "shoppingCart": "سلة التسوق",
   "electronics": "إلكترونيات",
@@ -44,5 +44,9 @@
   "dark": "داكن",
   "Cart": "السلة",
   "Home": "الرئيسية",
-  "Profile": "الصفحة الشخصية"
+  "Profile": "الصفحة الشخصية",
+  "all": "الكل",
+  "moreDetail": "المزيد من التفاصيل",
+  "search":"البحث...",
+  "discover":"استكشف"
 }

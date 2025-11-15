@@ -1,19 +1,19 @@
 export const Colors = {
   light: {
     text: '#11181C',
-    background: '#fff',
+    background: "#F0F1F3",
     tint: '#0a7ea4',
     icon: '#687076',
     mode: 'light',
-    primary: '#FA5455',
+    primary: '#e15184',
     surface: '#f5f5f5',
-    card: '#fff',
+    card: '#f0f0f0',
     textSecondary: '#666',
     textLight: '#999',
     border: '#ddd',
     shadow: '#000',
     headerBackground: '#FA5455',
-    headerText: '#fff',
+    headerText: 'black',
     buttonBackground: '#FA5455',
     buttonText: '#fff',
     inputBackground: '#fff',
@@ -21,8 +21,9 @@ export const Colors = {
     inputText: '#333',
     error: '#ff0000',
     success: '#34C759',
-    badgeBackground: '#fff',
-    badgeText: '#FA5455',
+    badgeBackground: '#e15184',
+    badgeText: 'white',
+    headerView:"#ffffffff"
   },
   dark: {
     text: '#ECEDEE',
@@ -30,7 +31,7 @@ export const Colors = {
     tint: '#fff',
     icon: '#9BA1A6',
     mode: 'dark',
-    primary: '#FA5455',
+    primary: 'white',
     surface: '#1e1e1e',
     card: '#2d2d2d',
     textSecondary: '#b0b0b0',
@@ -46,8 +47,9 @@ export const Colors = {
     inputText: '#fff',
     error: '#ff4444',
     success: '#34C759',
-    badgeBackground: '#FA5455',
-    badgeText: '#fff',
+    badgeBackground: 'white',
+    badgeText: '#e15184',
+    headerView:"#404040"
   },
 };
 
