@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import AuthNavigator from "./AuthNavigator";
 import MainNavigator from "./MainNavigator";
+import { ThemeProvider } from "../contexts/ThemeContext";
 
 const Stack = createNativeStackNavigator();
 const Router = () => {
@@ -15,6 +16,7 @@ const Router = () => {
   const isUser = false;
   return (
     <>
+     <ThemeProvider>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {isUser ? (
           <Stack.Screen name={ROUTES.AUTH} component={AuthNavigator} />
@@ -26,6 +28,7 @@ const Router = () => {
           />
         )}
       </Stack.Navigator>
+      </ThemeProvider>
     </>
   );
 };

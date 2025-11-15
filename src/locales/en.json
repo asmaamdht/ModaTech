@@ -8,7 +8,7 @@
   "pleaseEnterBoth": "Please enter both username and password",
   "loginFailed": "Login failed",
   "logout": "Logout",
-  "hello": "Hello",
+  "hello": "Hello {{name}}",
   "productDetails": "Product Details",
   "shoppingCart": "Shopping Cart",
   "electronics": "Electronics",
@@ -44,5 +44,9 @@
   "dark": "Dark",
   "Cart": "Cart",
   "Home": "Home",
-  "Profile": "Profile"
+  "Profile": "Profile",
+  "all": "All",
+  "moreDetail": "more detail",
+  "search":"Search...",
+  "discover":"Discover"
 }
