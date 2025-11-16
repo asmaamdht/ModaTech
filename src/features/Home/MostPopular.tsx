@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, ViewStyle } from 'react-native';
+import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, ViewStyle, ActivityIndicator } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useTheme } from '@/src/contexts/ThemeContext';
@@ -10,13 +10,15 @@ import { MostPopularProps } from '@/src/types/components/home';
 import Svg, { Path } from 'react-native-svg';
 import { useNavigation, useRouter } from 'expo-router';
 import { ROUTES } from '@/src/constants/Routes';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
+import { Ionicons } from '@expo/vector-icons';
 
 const MostPopular: React.FC<MostPopularProps> = ({ onPressItem, isRTL }) => {
   const { colors } = useTheme();
   const dispatch = useDispatch<AppDispatch>();
   const { products, loading, error } = useSelector((state: RootState) => state.products);
   const router =useRouter();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (products.length === 0) {
@@ -39,7 +41,7 @@ const MostPopular: React.FC<MostPopularProps> = ({ onPressItem, isRTL }) => {
   if (loading) {
     return (
       <View style={styles.container}>
-        <Text style={[styles.title, { color: colors.text }]}>Loading...</Text>
+        <ActivityIndicator size="large" color={colors.primary} style={{ marginTop: 20 }} />
       </View>
     );
   }
@@ -54,9 +56,14 @@ const MostPopular: React.FC<MostPopularProps> = ({ onPressItem, isRTL }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerRow}>
+      <View
+        style={[styles.headerRow,{ flexDirection: isRTL ? "row-reverse" : "row" },]}>
         <Text style={[styles.title, { color: colors.text }]}>{t(`mostPopular`)}</Text>
+        <View style={[styles.iconContainer, { backgroundColor: colors.headerView }]}>
+          <Ionicons name="arrow-forward-outline" color={colors.primary} size={24} style={{ transform: [{ scaleX: isRTL ? -1 : 1 }] }}/>
+        </View>
       </View>
+
 
       <FlatList
         horizontal
@@ -140,6 +147,9 @@ const styles = StyleSheet.create({
   headerRow: {
     paddingHorizontal: 15,
     marginBottom: 10,
+    flexDirection:"row",
+    justifyContent:"space-between",
+    alignItems:"center"
   },
   wrapper: { overflow: 'visible' },
   card: {
@@ -147,9 +157,9 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginRight: wp(3),
     marginBottom: hp(2),
-    shadowColor: '#000',
+    shadowColor: '#e15184',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 3,
     overflow: 'hidden',
@@ -220,4 +230,11 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginLeft: 3,
   } as ViewStyle,
+  iconContainer: {
+    height: hp("5"),
+    width: wp("12"),
+    borderRadius: 4,
+    justifyContent: "center",
+    alignItems: "center"
+  },
 });

@@ -7,6 +7,9 @@ import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View, Text, ViewStyle, TextStyle, TouchableOpacity, Modal } from 'react-native';
 import Svg, { Path } from "react-native-svg";
+import { useSelector } from "react-redux";
+import { RootState } from "@/src/redux/store";
+
 
 
 const CartBadge: FC = () => {
@@ -135,14 +138,14 @@ const ThemeSwitcher = () => {
 export const HomeHeader: FC<HomeHeaderProps> = ({ navigation }) => {
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
-  const [name , setName] = useState<string>("abdallah")
   const isRTL: boolean = i18n.language === 'ar';
+  const username = useSelector((state: RootState) => state.user.username);
 
   return (
     <View 
       style={[styles.headerRight,isRTL && styles.headerRightRTL]}  >
       <View style={[  styles.headerRightName , isRTL && styles.headerRightRTL ]}>
-        <Text style={[styles.nameText,{ color: colors.text }]}>{t('hello', { name: String(name) })}</Text>
+        <Text style={[styles.nameText,{ color: colors.text }]}> {t('hello', { name: username || "Guest" })}</Text>
       </View>
       <View 
         style={[styles.cartView,{ backgroundColor: colors.headerView },isRTL && styles.cartViewRTL]}>
@@ -189,7 +192,7 @@ const styles = StyleSheet.create({
     flex: 1,
   } as ViewStyle,
   nameText:{
-   fontSize:15,
+   fontSize:20,
    fontWeight:"bold"
   },
   headerRight: {

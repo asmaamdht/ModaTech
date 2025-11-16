@@ -66,7 +66,7 @@ export default function Search({
 
 const styles = StyleSheet.create({
   searchContainer: {
-    borderRadius: 20,
+    borderRadius: 10,
     paddingHorizontal: 15,
     paddingVertical: 8,
     margin: 15,
