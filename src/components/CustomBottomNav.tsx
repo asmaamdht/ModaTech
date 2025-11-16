@@ -5,7 +5,7 @@ import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
-import { useTranslation } from "react-i18next";
+//import { useTranslation } from "react-i18next";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import Animated, {
   FadeIn,
@@ -27,7 +27,7 @@ const StyledBottomNav: React.FC<BottomTabBarProps> = ({
   navigation,
   descriptors,
 }) => {
-  const { t } = useTranslation();
+  //const { t } = useTranslation();
   return (
     <BlurView intensity={50}>
       <View style={styles.container}>
@@ -69,7 +69,7 @@ const StyledBottomNav: React.FC<BottomTabBarProps> = ({
                 isFocused ? "white" : PRIMARY_COLOR,
                 isFocused
               )}
-              {isFocused && (
+              {/* {isFocused && (
                 <Animated.Text
                   style={{
                     padding: 10,
@@ -80,7 +80,7 @@ const StyledBottomNav: React.FC<BottomTabBarProps> = ({
                 >
                   {t(label.toString()) as string}
                 </Animated.Text>
-              )}
+              )} */}
             </AnimatedTouchableOpacity>
           );
         })}
