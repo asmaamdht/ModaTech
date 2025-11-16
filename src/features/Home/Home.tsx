@@ -144,7 +144,6 @@ const Home = ({ navigation }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginBottom:60
   } as ViewStyle,
   scrollView: {
     flex: 1,
