@@ -21,9 +21,8 @@ const AnimatedTouchableOpacity =
   Animated.createAnimatedComponent(TouchableOpacity);
 
 const PRIMARY_COLOR = "#f66479";
-const SECONDARY_COLOR = "#fff";
 
-const CustomBottomNav: React.FC<BottomTabBarProps> = ({
+const StyledBottomNav: React.FC<BottomTabBarProps> = ({
   state,
   navigation,
   descriptors,
@@ -32,74 +31,59 @@ const CustomBottomNav: React.FC<BottomTabBarProps> = ({
   return (
     <BlurView intensity={50}>
       <View style={styles.container}>
-        <LinearGradient
-          colors={["#da498a", "#f66479"]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 1 }}
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            height: hp("7"),
-            flexDirection: "row",
-            padding: wp("3"),
-            borderRadius: 10,
-          }}
-        >
-          {state.routes.map((route, index) => {
-            console.log(route);
-            const { options } = descriptors[route.key];
-            const label =
-              options.tabBarLabel !== undefined
-                ? options.tabBarLabel
-                : options.title !== undefined
-                ? options.title
-                : route.name;
+        {state.routes.map((route, index) => {
+          console.log(route);
+          const { options } = descriptors[route.key];
+          const label =
+            options.tabBarLabel !== undefined
+              ? options.tabBarLabel
+              : options.title !== undefined
+              ? options.title
+              : route.name;
 
-            const isFocused = state.index === index;
+          const isFocused = state.index === index;
 
-            const onPress = () => {
-              const event = navigation.emit({
-                type: "tabPress",
-                target: route.key,
-                canPreventDefault: true,
-              });
+          const onPress = () => {
+            const event = navigation.emit({
+              type: "tabPress",
+              target: route.key,
+              canPreventDefault: true,
+            });
 
-              if (!isFocused && !event.defaultPrevented) {
-                navigation.navigate(route.name, route.params);
-              }
-            };
+            if (!isFocused && !event.defaultPrevented) {
+              navigation.navigate(route.name, route.params);
+            }
+          };
 
-            return (
-              <AnimatedTouchableOpacity
-                key={index}
-                onPress={onPress}
-                entering={FadeIn.duration(200)}
-                exiting={FadeOut.duration(200)}
-                style={[styles.tabBar]}
-                layout={LinearTransition.springify().mass(0.5)}
-              >
-                {getIconByName(
-                  label as string,
-                  isFocused ? PRIMARY_COLOR : SECONDARY_COLOR,
-                  isFocused
-                )}
-                {isFocused && (
-                  <Animated.Text
-                    style={{
-                      padding: 10,
-                      textAlign: "center",
-                      color: "white",
-                      fontWeight: "500",
-                    }}
-                  >
-                    {t(label.toString()) as string}
-                  </Animated.Text>
-                )}
-              </AnimatedTouchableOpacity>
-            );
-          })}
-        </LinearGradient>
+          return (
+            <AnimatedTouchableOpacity
+              key={index}
+              onPress={onPress}
+              entering={FadeIn.duration(200)}
+              exiting={FadeOut.duration(200)}
+              style={[styles.tabBar]}
+              layout={LinearTransition.springify().mass(0.5)}
+            >
+              {getIconByName(
+                label as string,
+                isFocused ? "white" : PRIMARY_COLOR,
+                isFocused
+              )}
+              {isFocused && (
+                <Animated.Text
+                  style={{
+                    padding: 10,
+                    textAlign: "center",
+                    color: PRIMARY_COLOR,
+                    fontWeight: "500",
+                  }}
+                >
+                  {t(label.toString()) as string}
+                </Animated.Text>
+              )}
+            </AnimatedTouchableOpacity>
+          );
+        })}
       </View>
     </BlurView>
   );
@@ -108,46 +92,74 @@ const CustomBottomNav: React.FC<BottomTabBarProps> = ({
 const getIconByName = (route: string, color: string, isFocused: boolean) => {
   switch (route) {
     case "Home":
-      return (
+      return isFocused ? (
+        <View style={styles.iconContainer}>
+          <LinearGradient
+            colors={["#da498a", "#f66479"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            style={{
+              padding: wp("1"),
+              borderRadius: 25,
+            }}
+          >
+            <SimpleLineIcons
+              name="home"
+              size={24}
+              color={"white"}
+              style={styles.icon}
+            />
+          </LinearGradient>
+        </View>
+      ) : (
         <SimpleLineIcons
           name="home"
           size={24}
           color={color}
-          style={[
-            styles.icon,
-            {
-              backgroundColor: isFocused ? SECONDARY_COLOR : "transparent",
-            },
-          ]}
+          style={styles.icon}
         />
       );
     case "Cart":
-      return (
+      return isFocused ? (
+        <LinearGradient
+          colors={["#da498a", "#f66479"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 1 }}
+          style={{
+            padding: wp("1"),
+            borderRadius: 25,
+          }}
+        >
+          <FontAwesome
+            name="opencart"
+            size={24}
+            color={"white"}
+            style={styles.icon}
+          />
+        </LinearGradient>
+      ) : (
         <FontAwesome
           name="opencart"
           size={24}
           color={color}
-          style={[
-            styles.icon,
-            {
-              backgroundColor: isFocused ? SECONDARY_COLOR : "transparent",
-            },
-          ]}
+          style={styles.icon}
         />
       );
     case "Profile":
-      return (
-        <Feather
-          name="user"
-          size={24}
-          color={color}
-          style={[
-            styles.icon,
-            {
-              backgroundColor: isFocused ? SECONDARY_COLOR : "transparent",
-            },
-          ]}
-        />
+      return isFocused ? (
+        <LinearGradient
+          colors={["#da498a", "#f66479"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 1 }}
+          style={{
+            padding: wp("1"),
+            borderRadius: 25,
+          }}
+        >
+          <Feather name="user" size={24} color={"white"} style={styles.icon} />
+        </LinearGradient>
+      ) : (
+        <Feather name="user" size={24} color={color} style={styles.icon} />
       );
     default:
       return (
@@ -155,18 +167,13 @@ const getIconByName = (route: string, color: string, isFocused: boolean) => {
           name="home"
           size={24}
           color={color}
-          style={[
-            styles.icon,
-            {
-              backgroundColor: isFocused ? SECONDARY_COLOR : "transparent",
-            },
-          ]}
+          style={styles.icon}
         />
       );
   }
 };
 
-export default CustomBottomNav;
+export default StyledBottomNav;
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
@@ -174,7 +181,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "white",
+    backgroundColor: "rgba(231, 227, 227, 0.5)",
     width: wp("88"),
     height: hp("7"),
     bottom: hp("3"),
@@ -197,5 +204,13 @@ const styles = StyleSheet.create({
   icon: {
     borderRadius: 25,
     padding: hp("1"),
+  },
+  iconContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    borderRadius: 25,
+    width: wp("3"),
   },
 });
