@@ -1,26 +1,36 @@
-import React, { useEffect } from "react";
-import {View,ScrollView,StyleSheet,ActivityIndicator,Text,ViewStyle,} from "react-native";
-import { useTranslation } from "react-i18next";
-import { useTheme } from "@/src/contexts/ThemeContext";
-import CategoryTabs, { Category } from "./CategoryTabs";
-import ProductCard from "./ProductCard";
 import { ROUTES } from "@/src/constants/Routes";
-import {widthPercentageToDP as wp,heightPercentageToDP as hp} from "react-native-responsive-screen";
-import Search from "./Search";
-import AppBar from "./AppBar";
+import { useTheme } from "@/src/contexts/ThemeContext";
+import { fetchProducts } from "@/src/redux/Slice/productSlice";
+import { AppDispatch, RootState } from "@/src/redux/store";
 import { Product } from "@/src/types/components/home";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  ViewStyle,
+} from "react-native";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
-import  {fetchProducts}  from "@/src/redux/Slice/productSlice";
-import { RootState, AppDispatch } from "@/src/redux/store";
-import { useState } from "react";
-import MostPopular from "./MostPopular";
+import AppBar from "./AppBar";
+import CategoryTabs, { Category } from "./CategoryTabs";
 import LowestPrice from "./LowestPrices";
-
+import MostPopular from "./MostPopular";
+import ProductCard from "./ProductCard";
+import Search from "./Search";
 
 const Home = ({ navigation }: any) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { products, loading, error } = useSelector((state: RootState) => state.products);
-  
+  const { products, loading, error } = useSelector(
+    (state: RootState) => state.products
+  );
+
   const { t, i18n } = useTranslation();
   const { colors } = useTheme();
   const isRTL = i18n.language === "ar";
@@ -39,7 +49,7 @@ const Home = ({ navigation }: any) => {
 
   const filterProducts = () => {
     let filtered: Product[] = [];
-    
+
     if (selectedCategory === "all") {
       const allowedCategories = ["electronics", "jewelery", "men's clothing"];
       filtered = products.filter((product) =>
@@ -69,27 +79,26 @@ const Home = ({ navigation }: any) => {
   };
 
   return (
-      <ScrollView 
+    <ScrollView
       style={[styles.container, { backgroundColor: colors.background }]}
       showsVerticalScrollIndicator={false}
     >
       <AppBar navigation={navigation} />
-      
-       <View style={{ width: '100%' }}>
+
+      <View style={{ width: "100%" }}>
         <Search
           value={searchText}
           onChangeText={(text) => setSearchText(text)}
           isRTL={isRTL}
         />
       </View>
-      
 
       <CategoryTabs
         selectedCategory={selectedCategory}
         onCategoryChange={handleCategoryChange}
         isRTL={isRTL}
       />
-  
+
       {loading ? (
         <View style={styles.centerContainer}>
           <ActivityIndicator size="large" color={colors.primary} />
@@ -127,16 +136,9 @@ const Home = ({ navigation }: any) => {
         </ScrollView>
       )}
 
-      <MostPopular 
-        onPressItem={handleProductPress}
-        isRTL={isRTL}
-      />
+      <MostPopular onPressItem={handleProductPress} isRTL={isRTL} />
 
-      <LowestPrice 
-        onPressItem={handleProductPress}
-        isRTL={isRTL}
-      />
-
+      <LowestPrice onPressItem={handleProductPress} isRTL={isRTL} />
     </ScrollView>
   );
 };

@@ -47,8 +47,10 @@
   "Profile": "الصفحة الشخصية",
   "all": "الكل",
   "moreDetail": "المزيد من التفاصيل",
-  "search":"البحث...",
-  "discover":"استكشف",
-  "mostPopular":"الأكثر شعبية",
-  "lowestPrice":"الأقل سعر"
+  "search": "البحث...",
+  "discover": "استكشف",
+  "mostPopular": "الأكثر شعبية",
+  "lowestPrice": "الأقل سعر",
+  "avaiableProd": "متاح في المخزن",
+  "addCart": "  |  أضف للسلة"
 }

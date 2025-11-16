@@ -1,17 +1,17 @@
 //import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ROUTES } from "@/src/constants/Routes";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 import { useSelector } from "react-redux";
 import { ThemeProvider } from "../contexts/ThemeContext";
 import Loaduserdata from "../features/Login/Loaduserdata";
+import ProductDetails from "../features/ProductDetails/ProductDetails";
 import { RootState } from "../redux/store";
 import AuthNavigator from "./AuthNavigator";
 import MainNavigator from "./MainNavigator";
 
 const queryClient = new QueryClient();
-
 
 const Stack = createNativeStackNavigator();
 const Router = () => {
@@ -25,27 +25,29 @@ const Router = () => {
 
   return (
     <>
-      < ThemeProvider >
-
+      <ThemeProvider>
         <QueryClientProvider client={queryClient}>
           <Loaduserdata />
 
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             {user.token ? (
-              <Stack.Screen
-                name={ROUTES.MAIN_NAV}
-                component={MainNavigator}
-                options={{ headerShown: false }}
-              />
+              <>
+                <Stack.Screen
+                  name={ROUTES.MAIN_NAV}
+                  component={MainNavigator}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name={ROUTES.PRODUCT_DETAISL}
+                  component={ProductDetails}
+                />
+              </>
             ) : (
               <Stack.Screen name={ROUTES.AUTH} component={AuthNavigator} />
-
             )}
           </Stack.Navigator>
-
-        </QueryClientProvider >
-      </ThemeProvider >
-
+        </QueryClientProvider>
+      </ThemeProvider>
     </>
   );
 };

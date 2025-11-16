@@ -47,8 +47,10 @@
   "Profile": "Profile",
   "all": "All",
   "moreDetail": "more detail",
-  "search":"Search...",
-  "discover":"Discover",
-  "mostPopular":"Most Popular",
-  "lowestPrice":"Lowest Price"
+  "search": "Search...",
+  "discover": "Discover",
+  "mostPopular": "Most Popular",
+  "lowestPrice": "Lowest Price",
+  "avaiableProd": "Availbale in Stock",
+  "addCart": "Add to Cart  |  "
 }
