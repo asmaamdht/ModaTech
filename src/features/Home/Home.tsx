@@ -1,20 +1,20 @@
-import React, { useEffect } from "react";
-import {View,ScrollView,StyleSheet,ActivityIndicator,Text,ViewStyle,} from "react-native";
-import { useTranslation } from "react-i18next";
-import { useTheme } from "@/src/contexts/ThemeContext";
-import CategoryTabs, { Category } from "./CategoryTabs";
-import ProductCard from "./ProductCard";
 import { ROUTES } from "@/src/constants/Routes";
-import {widthPercentageToDP as wp,heightPercentageToDP as hp} from "react-native-responsive-screen";
-import Search from "./Search";
-import AppBar from "./AppBar";
+import { useTheme } from "@/src/contexts/ThemeContext";
+import { fetchCart } from "@/src/redux/Slice/cartSlice";
+import { fetchProducts } from "@/src/redux/Slice/productSlice";
+import { AppDispatch, RootState } from "@/src/redux/store";
 import { Product } from "@/src/types/components/home";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { ActivityIndicator, ScrollView, StyleSheet, Text, View, ViewStyle, } from "react-native";
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { useDispatch, useSelector } from "react-redux";
-import  {fetchProducts}  from "@/src/redux/Slice/productSlice";
-import { RootState, AppDispatch } from "@/src/redux/store";
-import { useState } from "react";
-import MostPopular from "./MostPopular";
+import AppBar from "./AppBar";
+import CategoryTabs, { Category } from "./CategoryTabs";
 import LowestPrice from "./LowestPrices";
+import MostPopular from "./MostPopular";
+import ProductCard from "./ProductCard";
+import Search from "./Search";
 
 
 const Home = ({ navigation }: any) => {
@@ -30,7 +30,9 @@ const Home = ({ navigation }: any) => {
   const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
-    dispatch(fetchProducts());
+    dispatch(fetchProducts()).unwrap().then(() => {
+      dispatch(fetchCart());
+    });
   }, [dispatch]);
 
   useEffect(() => {

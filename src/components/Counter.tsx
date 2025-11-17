@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { CounterProps } from "../types/components/counter";
 
@@ -6,30 +6,18 @@ const Counter: React.FC<CounterProps> = ({
   min = 0,
   max = 10,
   step = 1,
-  initialValue = 0,
+  value,
   onValueChange = () => { },
   width = 120,
   height = 50
 }) => {
 
-  const [value, setValue] = useState(
-    Math.min(Math.max(initialValue, min), max)
-  );
-
-  const handleDecrement = () => {
-    if (value > min) {
-      const newValue = value - step;
-      setValue(newValue);
-      onValueChange(newValue);
-    }
+ const handleDecrement = () => {
+    if (value > min) onValueChange(value - step);
   };
 
   const handleIncrement = () => {
-    if (value < max) {
-      const newValue = value + step;
-      setValue(newValue);
-      onValueChange(newValue);
-    }
+    if (value < max) onValueChange(value + step);
   };
 
   const disableMinus = value <= min;
