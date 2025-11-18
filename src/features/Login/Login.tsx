@@ -49,6 +49,10 @@ const Login: React.FC = () => {
         token: res.token,
         username: res.username,
         id: currentUser.id,
+        email: currentUser.email,
+        name: currentUser.name,
+        phone: currentUser.phone,
+        address: { city: currentUser.address.city },
       }
       await AsyncStorage.setItem('userdata', JSON.stringify(userdata));
       dispatch(setuserdata(userdata));
