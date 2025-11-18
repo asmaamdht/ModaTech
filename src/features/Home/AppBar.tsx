@@ -1,20 +1,20 @@
 import { ROUTES } from '@/src/constants/Routes';
 import { useTheme } from '@/src/contexts/ThemeContext';
 import { setLanguage } from '@/src/locales/i18n';
+import { RootState } from '@/src/redux/store';
 import { HomeHeaderProps } from '@/src/types/components/home';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import React, { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View, Text, ViewStyle, TextStyle, TouchableOpacity, Modal } from 'react-native';
+import { Modal, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import Svg, { Path } from "react-native-svg";
 import { useSelector } from "react-redux";
-import { RootState } from "@/src/redux/store";
 
 
 
 const CartBadge: FC = () => {
   const { colors } = useTheme();
-  const [count, setCount] = useState<number>(10);
+  const count = useSelector((state: RootState) => state.cart.cartItems.length);
 
   return (
     <View style={[styles.cartBadge, { backgroundColor: colors.badgeBackground }]}>

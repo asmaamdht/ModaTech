@@ -1,5 +1,6 @@
 import { ROUTES } from "@/src/constants/Routes";
 import { useTheme } from "@/src/contexts/ThemeContext";
+import { fetchCart } from "@/src/redux/Slice/cartSlice";
 import { fetchProducts } from "@/src/redux/Slice/productSlice";
 import { AppDispatch, RootState } from "@/src/redux/store";
 import { Product } from "@/src/types/components/home";
@@ -40,7 +41,9 @@ const Home = ({ navigation }: any) => {
   const [searchText, setSearchText] = useState("");
 
   useEffect(() => {
-    dispatch(fetchProducts());
+    dispatch(fetchProducts()).unwrap().then(() => {
+      dispatch(fetchCart());
+    });
   }, [dispatch]);
 
   useEffect(() => {
