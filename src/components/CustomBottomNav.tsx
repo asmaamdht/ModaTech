@@ -1,6 +1,5 @@
 import Feather from "@expo/vector-icons/Feather";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
+import Foundation from "@expo/vector-icons/Foundation";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from "expo-linear-gradient";
@@ -16,6 +15,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
+import { useTheme } from "../contexts/ThemeContext";
 
 const AnimatedTouchableOpacity =
   Animated.createAnimatedComponent(TouchableOpacity);
@@ -29,6 +29,7 @@ const CustomBottomNav: React.FC<BottomTabBarProps> = ({
   descriptors,
 }) => {
   const { t } = useTranslation();
+  const colors = useTheme();
   return (
     <BlurView intensity={50}>
       <View style={styles.container}>
@@ -40,10 +41,9 @@ const CustomBottomNav: React.FC<BottomTabBarProps> = ({
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
-            height: hp("7"),
+            height: hp("8"),
             flexDirection: "row",
-            padding: wp("3"),
-            borderRadius: 10,
+            padding: wp("5"),
           }}
         >
           {state.routes.map((route, index) => {
@@ -84,18 +84,6 @@ const CustomBottomNav: React.FC<BottomTabBarProps> = ({
                   isFocused ? PRIMARY_COLOR : SECONDARY_COLOR,
                   isFocused
                 )}
-                {isFocused && (
-                  <Animated.Text
-                    style={{
-                      padding: 10,
-                      textAlign: "center",
-                      color: "white",
-                      fontWeight: "500",
-                    }}
-                  >
-                    {t(label.toString()) as string}
-                  </Animated.Text>
-                )}
               </AnimatedTouchableOpacity>
             );
           })}
@@ -109,7 +97,7 @@ const getIconByName = (route: string, color: string, isFocused: boolean) => {
   switch (route) {
     case "Home":
       return (
-        <SimpleLineIcons
+        <Foundation
           name="home"
           size={24}
           color={color}
@@ -123,8 +111,8 @@ const getIconByName = (route: string, color: string, isFocused: boolean) => {
       );
     case "Cart":
       return (
-        <FontAwesome
-          name="opencart"
+        <Feather
+          name="shopping-cart"
           size={24}
           color={color}
           style={[
@@ -151,7 +139,7 @@ const getIconByName = (route: string, color: string, isFocused: boolean) => {
       );
     default:
       return (
-        <SimpleLineIcons
+        <Foundation
           name="home"
           size={24}
           color={color}
@@ -174,11 +162,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "white",
-    width: wp("88"),
-    height: hp("7"),
-    bottom: hp("3"),
-    borderRadius: 50,
+    width: wp("100"),
+    height: hp("8"),
+    bottom: hp("0"),
+    borderRadius: 0,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.3,
@@ -187,15 +174,15 @@ const styles = StyleSheet.create({
   tabBar: {
     flex: 1,
     justifyContent: "center",
-    borderRadius: 4,
     flexDirection: "row",
     alignItems: "center",
-    alignSelf: "center",
     height: hp("7"),
-    textAlignVertical: "center",
   },
   icon: {
-    borderRadius: 25,
+    borderRadius: 50,
     padding: hp("1"),
+    width: wp("10"),
+    alignSelf: "center",
+    textAlign: "center",
   },
 });

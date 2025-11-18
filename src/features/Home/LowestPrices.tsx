@@ -4,10 +4,11 @@ import { fetchProducts } from '@/src/redux/Slice/productSlice';
 import { AppDispatch, RootState } from '@/src/redux/store';
 import { ICart } from '@/src/types/components/cart';
 import { LowestPriceProps, Product } from '@/src/types/components/home';
+import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { t } from 'i18next';
 import React, { useEffect } from 'react';
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import Svg, { Path } from 'react-native-svg';
 import Toast from 'react-native-toast-message';
@@ -19,6 +20,7 @@ const LowestPrice: React.FC<LowestPriceProps> = ({ onPressItem, isRTL }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { products, loading, error } = useSelector((state: RootState) => state.products);
   const router =useRouter();
+    const { t } = useTranslation();
 
   useEffect(() => {
     if (products.length === 0) {
@@ -52,7 +54,7 @@ const LowestPrice: React.FC<LowestPriceProps> = ({ onPressItem, isRTL }) => {
   if (loading) {
     return (
       <View style={styles.container}>
-        <Text style={[styles.title, { color: colors.text }]}>Loading...</Text>
+        <ActivityIndicator size="large" color={colors.primary} style={{ marginTop: 20 }} />
       </View>
     );
   }
@@ -67,9 +69,13 @@ const LowestPrice: React.FC<LowestPriceProps> = ({ onPressItem, isRTL }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerRow}>
+      <View style={[styles.headerRow,{ flexDirection: isRTL ? "row-reverse" : "row" },]}>
         <Text style={[styles.title, { color: colors.text }]}>{t(`lowestPrice`)}</Text>
+        <View style={[styles.iconContainer, { backgroundColor: colors.headerView }]}>
+          <Ionicons name="arrow-forward-outline" color={colors.primary} size={24} style={{ transform: [{ scaleX: isRTL ? -1 : 1 }] }}/>
+        </View>
       </View>
+
 
       <FlatList
         horizontal
@@ -149,12 +155,15 @@ const styles = StyleSheet.create({
   container: { 
     marginTop: 20,
     paddingHorizontal: 16,
-    marginBottom: 10,
+    marginBottom: 70,
   },
 
   headerRow: {
     paddingHorizontal: 15,
     marginBottom: 10,
+    flexDirection:"row",
+    justifyContent:"space-between",
+    alignItems:"center"
   },
 
   title: {
@@ -169,9 +178,9 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginRight: wp(3),
     marginBottom: hp(2),
-    shadowColor: '#000',
+    shadowColor: '#e15184',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 3,
     overflow: 'hidden',
@@ -240,4 +249,11 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginLeft: 3,
   } as ViewStyle,
+  iconContainer: {
+    height: hp("5"),
+    width: wp("12"),
+    borderRadius: 4,
+    justifyContent: "center",
+    alignItems: "center"
+  },
 });

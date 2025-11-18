@@ -1,6 +1,6 @@
 import { Colors } from "../constants/theme";
-import { useColorScheme } from "./use-color-scheme";
 import { useTheme } from "../contexts/ThemeContext";
+import { useColorScheme } from "./use-color-scheme";
 
 export function useThemeColor(
   props: { light?: string; dark?: string },
@@ -11,7 +11,6 @@ export function useThemeColor(
   try {
     theme = useTheme()?.theme ?? useColorScheme() ?? "light";
   } catch {
-
     theme = useColorScheme() ?? "light";
   }
 

@@ -10,6 +10,9 @@ import z from 'zod';
 import { setuserdata } from '../../redux/Slice/userslice';
 import { AppDispatch } from '../../redux/store';
 import ButtonTh from './ButtonTh';
+import StyledButton from '@/src/components/StyledButton';
+import StyledInput from '@/src/components/StyledInput';
+import { Colors } from '@/src/constants/theme';
 
 
 const Login: React.FC = () => {
@@ -49,6 +52,10 @@ const Login: React.FC = () => {
         token: res.token,
         username: res.username,
         id: currentUser.id,
+        email: currentUser.email,
+        name: currentUser.name,
+        phone: currentUser.phone,
+        address: { city: currentUser.address.city },
       }
       await AsyncStorage.setItem('userdata', JSON.stringify(userdata));
       dispatch(setuserdata(userdata));
@@ -72,9 +79,9 @@ const Login: React.FC = () => {
         control={control}
         name='username'
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
+          <StyledInput
             placeholder=' Enter your username'
-            style={Styles.input}
+            // style={Styles.input}
             value={value}
             onChangeText={onChange}
             onBlur={onBlur}
@@ -87,9 +94,9 @@ const Login: React.FC = () => {
         control={control}
         name='password'
         render={({ field: { onChange, onBlur, value } }) => (
-          <TextInput
+          <StyledInput
             placeholder=' Enter your password'
-            style={Styles.input}
+            // style={Styles.input}
             value={value}
             onChangeText={onChange}
             onBlur={onBlur}
@@ -100,7 +107,7 @@ const Login: React.FC = () => {
         )}
       />
       {formState.errors.password && <Text style={Styles.errors}> {formState.errors.password.message}</Text>}
-      <ButtonTh title={mutation.isPending ? <ActivityIndicator color={"white"} /> : "login"} onPress={handleSubmit(handleLogin)} disabled={mutation.isPending} />
+      <StyledButton value={mutation.isPending ? <ActivityIndicator color={"white"} /> : "login"} onPress={handleSubmit(handleLogin)} disabled={mutation.isPending} />
 
 
 
@@ -112,13 +119,17 @@ const Styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
+    // alignItems: "center",
     paddingBottom: 20,
+    paddingHorizontal:20,
   },
   mainheader: {
     fontSize: 30,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 20,
+    textAlign:'center',
+    color:Colors.light.primary,
+    
   },
   input: {
     width: '90%',

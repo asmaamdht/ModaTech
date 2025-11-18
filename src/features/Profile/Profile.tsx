@@ -1,30 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 
-import StyledButton from '@/src/components/StyledButton';
-import StyledInput from '@/src/components/StyledInput';
-import StyledText from '@/src/components/StyledText';
-import { ROUTES } from '@/src/constants/Routes';
-import { clearuserdata } from '@/src/redux/Slice/userslice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StackActions } from '@react-navigation/native';
 import { useNavigation } from 'expo-router';
+import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import StyledButton from '../../components/StyledButton';
+import StyledInput from '../../components/StyledInput';
+import StyledText from '../../components/StyledText';
+import { ROUTES } from '../../constants/Routes';
+import { clearuserdata, setuserdata } from '../../redux/Slice/userslice';
+import { RootState } from '../../redux/store';
 import StyleProfile from './StyleProfile';
 
 const Profile: React.FC = () => {
 
-  const [userInfo, setUserInfo] = useState({
-    firstName: 'Asmaa',
-    lastName: 'Medhat',
-    email: 'asmaamedhat@gmail.com',
-    phone: '01032547856',
-    address: 'KomHamada',
-  })
-
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const user = useSelector((state: RootState) => state.user);
 
+
+  useEffect(() => {
+    const getUserData = async () => {
+      const userDataFromApi = await AsyncStorage.getItem('userdata');
+      if (userDataFromApi) {
+        const data = JSON.parse(userDataFromApi);
+        dispatch(setuserdata(data));
+      }
+    };
+    getUserData();
+  }, []);
 
   const handleLogout = async () => {
     dispatch(clearuserdata());
@@ -37,30 +43,33 @@ const Profile: React.FC = () => {
     <SafeAreaView style={StyleProfile.container}>
 
       <StyledText title='User Profile' />
-      <StyledInput
-        value={userInfo.firstName}
-        editable={false}
-      />
-      <StyledInput
-        value={userInfo.lastName}
-        editable={false}
+      <View style={{ marginTop: 30 }}>
 
-      />
-      <StyledInput
-        value={userInfo.email}
-        editable={false}
+        <StyledInput
+          value={user.name?.firstname || ""}
+          editable={false}
+        />
+        <StyledInput
+          value={user.name?.lastname || ""}
+          editable={false}
 
-      />
-      <StyledInput
-        value={userInfo.phone}
-        editable={false}
+        />
+        <StyledInput
+          value={user.email || ""}
+          editable={false}
 
-      />
-      <StyledInput
-        value={userInfo.address}
-        editable={false}
+        />
+        <StyledInput
+          value={user.phone || ""}
+          editable={false}
 
-      />
+        />
+        <StyledInput
+          value={user.address?.city || ""}
+          editable={false}
+
+        />
+      </View>
 
       <StyledButton value="Logout" onPress={handleLogout} />
 
@@ -69,7 +78,5 @@ const Profile: React.FC = () => {
 };
 
 export default Profile;
-function dispatch(clearuserdata: any) {
-  throw new Error('Function not implemented.');
-}
+
 
