@@ -1,9 +1,14 @@
 import { useTheme } from '@/src/contexts/ThemeContext';
 import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
+import { Swipeable } from 'react-native-gesture-handler';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { useDispatch } from 'react-redux';
+import { saveCart, updateQuantity } from '../redux/Slice/cartSlice';
+import { AppDispatch } from '../redux/store';
 import { ICart } from '../types/components/cart';
 import Counter from './Counter';
+import DeleteAction from './DeleteAction';
 
 interface Props {
   cart: ICart;
@@ -11,8 +16,11 @@ interface Props {
 
 const CartItem: React.FC<Props> = ({ cart }) => {
   const { colors } = useTheme();
+  const dispatch = useDispatch<AppDispatch>();
+  const renderRightActions = () => <DeleteAction cart={cart} />;
 
   return (
+    <Swipeable renderRightActions={renderRightActions}>
     <View style={[styles.card, { backgroundColor: colors.cart }]}>
   
       <View style={[styles.imageContainer , {backgroundColor: colors.surface}]}>
@@ -26,11 +34,18 @@ const CartItem: React.FC<Props> = ({ cart }) => {
         <View style={styles.bottomRow}>
           <Text style={[styles.price, { color: colors.textSecondary }]}>${cart.price.toFixed(2)}</Text>
           <Counter
-            initialValue={cart.quantity}
+            min={1}
+            max={10}
+            value={cart.quantity}
+            onValueChange={(newQty) => {
+                dispatch(updateQuantity({ id: cart.id, quantity: newQty }));
+                dispatch(saveCart());
+            }}
           />
         </View>
       </View>
     </View>
+    </Swipeable>
   );
 };
 
