@@ -7,4 +7,6 @@ export const ROUTES = {
   PROFILE: "Profile",
   STACK: "Stack",
   MAIN_NAV: "MainNavigator",
+  WELCOME: 'Welcome',
+  ONBOARDING: 'Onboarding',
 };

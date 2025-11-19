@@ -13,13 +13,16 @@ import { ROUTES } from '../../constants/Routes';
 import { clearuserdata, setuserdata } from '../../redux/Slice/userslice';
 import { RootState } from '../../redux/store';
 import StyleProfile from './StyleProfile';
+import { useTheme } from '@/src/contexts/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 const Profile: React.FC = () => {
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const user = useSelector((state: RootState) => state.user);
-
+    const { colors } = useTheme();
+    const {t}=useTranslation();
 
   useEffect(() => {
     const getUserData = async () => {
@@ -40,38 +43,39 @@ const Profile: React.FC = () => {
 
 
   return (
-    <SafeAreaView style={StyleProfile.container}>
+    <SafeAreaView style={[StyleProfile.container,{backgroundColor:colors.background}] }>
 
-      <StyledText title='User Profile' />
+      <StyledText title={t('Profile')} style={{color:colors.primary}} />
       <View style={{ marginTop: 30 }}>
 
         <StyledInput
           value={user.name?.firstname || ""}
           editable={false}
+          style={{backgroundColor:colors.input ,color:colors.text}}
         />
         <StyledInput
           value={user.name?.lastname || ""}
           editable={false}
-
+          style={{backgroundColor:colors.input ,color:colors.text}}
         />
         <StyledInput
           value={user.email || ""}
           editable={false}
-
+          style={{backgroundColor:colors.input ,color:colors.text}}
         />
         <StyledInput
           value={user.phone || ""}
           editable={false}
-
+          style={{backgroundColor:colors.input ,color:colors.text}}
         />
         <StyledInput
           value={user.address?.city || ""}
           editable={false}
-
+          style={{backgroundColor:colors.input ,color:colors.text}}
         />
       </View>
 
-      <StyledButton value="Logout" onPress={handleLogout} />
+      <StyledButton value={t('logout')} onPress={handleLogout} />
 
     </SafeAreaView>
   );
