@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Alert, StyleSheet } from "react-native";
 import { RectButton } from "react-native-gesture-handler";
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -13,18 +14,19 @@ interface Props {
 
 const DeleteAction: React.FC<Props> = ({ cart }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useTranslation();
 
   return (
     <RectButton
       style={styles.deleteButton}
       onPress={() => {
         Alert.alert(
-          "Remove Item",
-          "Are you sure you want to remove this item?",
+          t("removeItem"),
+          t("removeItemConfirm", { title: cart.title.split(" ").slice(0, 2).join(" ") || "" }),
           [
-            { text: "Cancel", style: "cancel" },
+            { text: t("cancel"), style: "cancel" },
             {
-              text: "Delete",
+              text: t("remove"),
               style: "destructive",
               onPress: () => {
                 dispatch(removeFromCart(cart.id));

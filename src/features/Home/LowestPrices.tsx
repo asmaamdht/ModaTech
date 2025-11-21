@@ -38,8 +38,7 @@ const LowestPrice: React.FC<LowestPriceProps> = ({ onPressItem, isRTL }) => {
     dispatch(saveCart());
     Toast.show({
       type: "success",
-      text1: "Added to Cart",
-      text2: "The item added to cart",
+      text1: t("productAddedToCart"),
     });
   };
   

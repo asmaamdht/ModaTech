@@ -5,6 +5,7 @@ import { useTheme } from '@/src/contexts/ThemeContext';
 import { RootState } from '@/src/redux/store';
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import {
   heightPercentageToDP as hp,
@@ -17,6 +18,7 @@ const Cart = () => {
   const { colors } = useTheme();
   const { cartItems, loading: cartLoading , error} = useSelector((state: RootState) => state.cart);
   const navigation : any = useNavigation();
+  const { t } = useTranslation();
 
   const loading = cartLoading ;
 
@@ -29,7 +31,7 @@ const Cart = () => {
           <Ionicons name={"arrow-back-outline"} color={colors.primary} size={24} />
         </View>
         </TouchableOpacity>
-        <Text style={[styles.headerText, { color: colors.text }]}>Cart</Text>
+        <Text style={[styles.headerText, { color: colors.text }]}>{t("Cart")}</Text>
         <View style={{ width: wp("8") }} />
       </View>
       {loading ? (
