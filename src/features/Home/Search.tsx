@@ -20,7 +20,7 @@ export default function Search({
   const {colors} = useTheme()
   return (
     <>
-    <View style={styles.discoverView}>
+    <View style={[styles.discoverView, {flexDirection: isRTL ? "row-reverse" : "row" }]}>
       <Text style={[styles.discoverText ,{color: colors.primary}]}> {t(`discover`)}</Text>
     </View>
     <ExpoLinearGradient
@@ -98,6 +98,10 @@ const styles = StyleSheet.create({
     writingDirection: 'rtl',
   },
   discoverView:{
+   paddingHorizontal:15 , 
+   paddingTop:10
+  },
+  discoverViewRTL:{
    paddingHorizontal:15 , 
    paddingTop:10
   },

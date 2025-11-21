@@ -1,49 +1,54 @@
 import CartItem from '@/src/components/CartItem';
+import PaymentDetails from '@/src/components/PaymentDetails';
+import { ROUTES } from '@/src/constants/Routes';
 import { useTheme } from '@/src/contexts/ThemeContext';
-import { fetchCart } from '@/src/redux/Slice/cartSlice';
-import { fetchProducts } from '@/src/redux/Slice/productSlice';
-import { AppDispatch, RootState } from '@/src/redux/store';
-import React, { useEffect } from "react";
-import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { RootState } from '@/src/redux/store';
+import { useNavigation } from "@react-navigation/native";
+import React from "react";
+import { useTranslation } from 'react-i18next';
+import { ActivityIndicator, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const Cart = () => {
   const { colors } = useTheme();
-  const dispatch = useDispatch<AppDispatch>();
-  const { cartItems, loading: cartLoading } = useSelector((state: RootState) => state.cart);
-  const { products, loading: productsLoading } = useSelector((state: RootState) => state.products);
-  useEffect(() => {
-    dispatch(fetchProducts()).unwrap().then(() => {
-      dispatch(fetchCart());
-    });
-  }, [dispatch]);
+  const { cartItems, loading: cartLoading , error} = useSelector((state: RootState) => state.cart);
+  const navigation : any = useNavigation();
+  const { t } = useTranslation();
 
-  const loading = cartLoading || productsLoading;
+  const loading = cartLoading ;
 
 
   return (
     <ScrollView style={{ backgroundColor: colors.background }} contentContainerStyle={styles.container}>
       <View style={styles.headerContainer}>
-        <View style={[styles.iconContainer, { backgroundColor: colors.headerView }]}>
+        <TouchableOpacity onPress={() => navigation.navigate(ROUTES.STACK,{screen: ROUTES.HOME})}>
+          <View style={[styles.iconContainer, { backgroundColor: colors.headerView }]}>
           <Ionicons name={"arrow-back-outline"} color={colors.primary} size={24} />
         </View>
-        <Text style={[styles.headerText, { color: colors.text }]}>Cart</Text>
+        </TouchableOpacity>
+        <Text style={[styles.headerText, { color: colors.text }]}>{t("Cart")}</Text>
         <View style={{ width: wp("8") }} />
       </View>
       {loading ? (
         <ActivityIndicator size="large" color={colors.primary} style={{ marginTop: 20 }} />
       ) : (
-        cartItems.map(cart => (
+        <>
+        {cartItems.map(cart => (
           <CartItem
             key={cart.id}
             cart={cart}
           />
-        ))
+        ))}
+        <PaymentDetails/>
+        </>
+      )}
+      {!loading && error && (
+        <Text style={{ marginTop: 20, color: 'red' }}>{error}</Text>
       )}
     </ScrollView>
   );

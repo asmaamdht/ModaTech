@@ -1,17 +1,18 @@
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, ViewStyle, ActivityIndicator } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useTheme } from '@/src/contexts/ThemeContext';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/src/redux/store';
+import { addToCart, saveCart } from "@/src/redux/Slice/cartSlice";
 import { fetchProducts } from '@/src/redux/Slice/productSlice';
-import { MostPopularProps } from '@/src/types/components/home';
-import Svg, { Path } from 'react-native-svg';
-import { useNavigation, useRouter } from 'expo-router';
-import { ROUTES } from '@/src/constants/Routes';
-import { useTranslation } from 'react-i18next';
+import { AppDispatch, RootState } from '@/src/redux/store';
+import { ICart } from '@/src/types/components/cart';
+import { MostPopularProps, Product } from '@/src/types/components/home';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
+import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import Svg, { Path } from 'react-native-svg';
+import Toast from 'react-native-toast-message';
+import { useDispatch, useSelector } from 'react-redux';
 
 const MostPopular: React.FC<MostPopularProps> = ({ onPressItem, isRTL }) => {
   const { colors } = useTheme();
@@ -25,6 +26,20 @@ const MostPopular: React.FC<MostPopularProps> = ({ onPressItem, isRTL }) => {
       dispatch(fetchProducts());
     }
   }, [dispatch]);
+
+  const handleAddToCart = (product: Product) => {
+    const cartItem: ICart = {
+    ...product,
+    productId: product.id, 
+    quantity: 1,          
+  };
+  dispatch(addToCart(cartItem));
+  dispatch(saveCart());
+  Toast.show({
+    type: "success",
+    text1: t("productAddedToCart"),
+  });
+};
 
  const allowedCategories = ["electronics", "jewelery", "men's clothing"];
  const filteredProducts = products.filter(
@@ -117,7 +132,7 @@ const MostPopular: React.FC<MostPopularProps> = ({ onPressItem, isRTL }) => {
                   <View 
                     style={[styles.cartView,{ backgroundColor: colors.primary },isRTL && styles.cartViewRTL]}>
                     <TouchableOpacity
-                      onPress={() => router.push(ROUTES.CART as any)}
+                      onPress={() => handleAddToCart(item)}
                       style={styles.cartIcon}
                     >
                       <Svg width="25" height="25" viewBox="0 0 25 25" fill={colors.headerView}>
