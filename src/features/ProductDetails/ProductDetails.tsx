@@ -2,15 +2,22 @@ import StyledButton from "@/src/components/StyledButton";
 import StyledText from "@/src/components/StyledText";
 import { useTheme } from "@/src/contexts/ThemeContext";
 import i18n from "@/src/locales/i18n";
+import { addToCart, saveCart } from "@/src/redux/Slice/cartSlice";
+import { AppDispatch } from "@/src/redux/store";
+import { ICart } from "@/src/types/components/cart";
+import { Product } from "@/src/types/components/home";
+import { RootStackParamList } from "@/src/types/components/product";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
   Image,
   ImageBackground,
+  Pressable,
+  ScrollView,
   StyleSheet,
-  TouchableOpacity,
   View,
 } from "react-native";
 import {
@@ -19,22 +26,32 @@ import {
 } from "react-native-responsive-screen";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StarRatingDisplay } from "react-native-star-rating-widget";
+import Toast from "react-native-toast-message";
+import { useDispatch } from "react-redux";
 
 const ProductDetails = () => {
-  const prod = {
-    id: 0,
-    title: "Apple Watch Seriecs",
-    price: "N45,000",
-    sale: "N45,000",
-    description:
-      "The upgraded S6 SiP runs up to 20 percent faster, allowing apps to also launch 20 percent faster, while maintaining the same all-day 18-hour battery life.",
-    category: "string",
-    image: "../../assets/images/1.png",
-  };
   const { t } = useTranslation();
-  //const navigation = useNavigation();
+  const route =
+    useRoute<RouteProp<RootStackParamList, "ProductScreen">>().params;
+  const navigation = useNavigation();
   const theme = useTheme();
   const isRTL = i18n.language === "ar";
+  const prod: Product = route?.product;
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleAddToCart = (product: Product) => {
+    const cartItem: ICart = {
+      ...product,
+      productId: product.id,
+      quantity: 1,
+    };
+    dispatch(addToCart(cartItem));
+    dispatch(saveCart());
+    Toast.show({
+      type: "success",
+      text1: t("productAddedToCart"),
+    });
+  };
 
   return (
     <SafeAreaProvider>
@@ -46,12 +63,11 @@ const ProductDetails = () => {
       >
         <ImageBackground
           source={
-            // theme.theme === "dark"
-            //   ? require("../../assets/images/14.png")
-            //   :
-            require("../../assets/images/Ellipse 1.png")
+            theme.theme === "dark"
+              ? require("../../assets/images/14.png")
+              : require("../../assets/images/Ellipse 1.png")
           }
-          resizeMode="cover"
+          resizeMode="stretch"
           style={
             theme.theme === "dark"
               ? styles.darkBackgroundImage
@@ -61,48 +77,52 @@ const ProductDetails = () => {
           <View
             style={[
               styles.header,
-              { flexDirection: isRTL ? "row-reverse" : "row" },
+              {
+                flexDirection: isRTL ? "row-reverse" : "row",
+                alignItems: "flex-end",
+              },
             ]}
           >
-            <TouchableOpacity
-              style={[
-                styles.backBtn,
-                ,
-                { backgroundColor: theme.colors.headerView },
-              ]}
+            <Pressable
+              style={[styles.backBtn, theme.theme === "dark" && { top: "50%" }]}
+              onPress={() => navigation.goBack()}
             >
               <Ionicons
-                name={isRTL ? "arrow-back" : "arrow-forward"}
+                name={isRTL ? "arrow-forward" : "arrow-back"}
                 size={24}
-                color={theme.theme === "dark" ? "white" : "black"}
+                color={theme.colors.text}
               />
-            </TouchableOpacity>
+            </Pressable>
             <Image
-              source={require("../../assets/images/1.png")}
-              style={styles.prodImage}
+              resizeMode="center"
+              source={{ uri: prod.image }}
+              style={[
+                styles.prodImage,
+                theme.theme === "dark" && { top: "50%" },
+              ]}
             />
           </View>
         </ImageBackground>
-        <View style={{ top: hp("-5") }}>
+        <ScrollView style={{ flex: 1, top: hp("5") }}>
           <StyledText
             title={prod.title}
             style={[styles.prodTitle, { color: theme.colors.text }]}
           />
           <StarRatingDisplay
-            rating={4.5}
+            rating={prod.rating?.rate ?? 0}
             starSize={20}
             style={{ marginVertical: hp("1"), marginHorizontal: hp("-1") }}
           />
           <View style={styles.container}>
             <View style={styles.container}>
               <StyledText
-                title={prod.price}
+                title={prod.price + " $"}
                 style={[styles.price, { color: theme.colors.text }]}
               />
-              <StyledText
+              {/* <StyledText
                 title={prod.sale}
                 style={[styles.sale, { color: theme.colors.text }]}
-              />
+              /> */}
             </View>
             <StyledText
               title={t("avaiableProd")}
@@ -111,9 +131,9 @@ const ProductDetails = () => {
           </View>
           <StyledText
             style={[styles.desc, { color: theme.colors.text }]}
-            title={prod.description}
+            title={prod.description || ""}
           />
-        </View>
+        </ScrollView>
         <StyledButton
           value={t("addCart")}
           style={[
@@ -123,11 +143,11 @@ const ProductDetails = () => {
               flexDirection: isRTL ? "row-reverse" : "row",
             },
           ]}
-          onPress={() => {}}
+          onPress={() => handleAddToCart(prod)}
           icon={
             <FontAwesome5 name="shopping-cart" size={hp("2")} color="white" />
           }
-          textStyle={{ fontSize: hp("2.2") }}
+          textStyle={{ fontSize: hp("2.2"), textAlign: "left" }}
         />
       </View>
     </SafeAreaProvider>
@@ -143,40 +163,45 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
   },
   backgroundImage: {
     flex: 1,
     width: wp("100"),
-    height: hp("50"),
+    height: hp("45"),
     alignSelf: "center",
+    position: "relative",
   },
   darkBackgroundImage: {
     flex: 1,
-    width: wp("100"),
-    height: hp("50"),
+    width: wp("120"),
+    height: hp("65"),
     alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    top: hp("-20"),
+    position: "relative",
   },
   header: {
     flexDirection: "row",
     justifyContent: "flex-start",
-    alignItems: "flex-start",
+    alignItems: "flex-end",
   },
   backBtn: {
-    marginHorizontal: hp("2"),
+    marginHorizontal: wp("2"),
     marginVertical: hp("4"),
     height: hp("4"),
     width: wp("8"),
     borderRadius: 4,
     justifyContent: "center",
     alignItems: "center",
+    position: "absolute",
+    alignSelf: "flex-start",
+    zIndex: 99,
   },
   prodImage: {
-    width: wp("100"),
-    height: hp("70"),
-    resizeMode: "contain",
-    position: "absolute",
-    top: hp("-13"),
+    width: wp("90"),
+    height: hp("40"),
+    alignSelf: "center",
   },
   prodTitle: {
     fontSize: hp("2.5"),
@@ -194,10 +219,9 @@ const styles = StyleSheet.create({
     color: "#AFAFAF",
     marginLeft: hp("1"),
   },
-  desc: { fontSize: hp("2"), marginTop: hp("0.8") },
+  desc: { fontSize: hp("1.8"), marginTop: hp("0.8") },
   cartBtn: {
     width: wp("50"),
-    flexDirection: "row",
     justifyContent: "center",
     alignSelf: "flex-end",
   },
