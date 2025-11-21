@@ -1,10 +1,11 @@
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { I18nManager, Platform } from 'react-native';
-import * as Updates from 'expo-updates';
-import en from '@/src/locales/en.json';
-import ar from '@/src/locales/ar.json';
+import ar from "@/src/locales/ar.json";
+import en from "@/src/locales/en.json";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Updates from "expo-updates";
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import { I18nManager, Platform } from "react-native";
+import RNRestart from "react-native-restart";
 
 const getStoredLanguage = async (): Promise<string> => {
   try {
@@ -20,9 +21,9 @@ getStoredLanguage().then((lang: string) => {
   I18nManager.allowRTL(isRTL);
   I18nManager.forceRTL(isRTL);
   i18n.use(initReactI18next).init({
-    compatibilityJSON: 'v4',
+    compatibilityJSON: "v4",
     lng: lang,
-    fallbackLng: 'en',
+    fallbackLng: "en",
     debug: false,
     resources: {
       en: { translation: en },
@@ -35,7 +36,7 @@ getStoredLanguage().then((lang: string) => {
 export const setLanguage = async (lang: string): Promise<string> => {
   try {
     const currentLanguage = i18n.language;
-    
+
     // Check if language is actually changing
     if (currentLanguage === lang) {
       return lang;
@@ -51,13 +52,14 @@ export const setLanguage = async (lang: string): Promise<string> => {
       I18nManager.forceRTL(isRTL);
 
       // Reload app to apply RTL changes
-      if (Platform.OS !== 'web') {
+      if (Platform.OS !== "web") {
         // Give time for AsyncStorage to save
         setTimeout(async () => {
           try {
             await Updates.reloadAsync();
+            RNRestart.Restart();
           } catch (error) {
-            console.log('Manual reload required:', error);
+            console.log("Manual reload required:", error);
             // Fallback: just change language without reload
             await i18n.changeLanguage(lang);
           }

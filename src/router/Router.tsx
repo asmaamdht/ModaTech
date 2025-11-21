@@ -8,7 +8,6 @@ import { ThemeProvider } from "../contexts/ThemeContext";
 import Loaduserdata from "../features/Login/Loaduserdata";
 import ProductDetails from "../features/ProductDetails/ProductDetails";
 import { RootState } from "../redux/store";
-import AuthNavigator from "./AuthNavigator";
 import MainNavigator from "./MainNavigator";
 
 const queryClient = new QueryClient();
@@ -30,21 +29,21 @@ const Router = () => {
           <Loaduserdata />
 
           <Stack.Navigator screenOptions={{ headerShown: false }}>
-            {user.token ? (
-              <>
-                <Stack.Screen
-                  name={ROUTES.MAIN_NAV}
-                  component={MainNavigator}
-                  options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                  name={ROUTES.PRODUCT_DETAISL}
-                  component={ProductDetails}
-                />
-              </>
+            {/* {user.token ? (
+              <> */}
+            <Stack.Screen
+              name={ROUTES.MAIN_NAV}
+              component={MainNavigator}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name={ROUTES.PRODUCT_DETAISL}
+              component={ProductDetails}
+            />
+            {/* </>
             ) : (
               <Stack.Screen name={ROUTES.AUTH} component={AuthNavigator} />
-            )}
+            )} */}
           </Stack.Navigator>
         </QueryClientProvider>
       </ThemeProvider>

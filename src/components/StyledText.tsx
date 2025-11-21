@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text } from "react-native";
 
 type StyledTextType = {
-  title: string;
+  title: string | number;
   style?: object;
 };
 const StyledText: React.FC<StyledTextType> = ({ title, style }) => {
@@ -14,6 +14,6 @@ export default StyledText;
 const StyleTitle = StyleSheet.create({
   title: {
     fontSize: 20,
-    fontWeight: '500',
+    fontWeight: "500",
   },
 });
