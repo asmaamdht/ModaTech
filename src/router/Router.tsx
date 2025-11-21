@@ -3,13 +3,14 @@ import { ROUTES } from "@/src/constants/Routes";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
-import { ThemeProvider} from "../contexts/ThemeContext";
+import { ThemeProvider } from "../contexts/ThemeContext";
 import Loaduserdata from "../features/Login/Loaduserdata";
 import ProductDetails from "../features/ProductDetails/ProductDetails";
 import { RootState } from "../redux/store";
+import AuthNavigator from "./AuthNavigator";
 import MainNavigator from "./MainNavigator";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
 
 const queryClient = new QueryClient();
 
@@ -22,10 +23,9 @@ const Router = () => {
 
   // const isUser = false;
   const user = useSelector((state: RootState) => state.user);
-   const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
-
-    useEffect(() => {
+  useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 100);
@@ -33,7 +33,7 @@ const Router = () => {
     return () => clearTimeout(timer);
   }, []);
 
-   if (isLoading) {
+  if (isLoading) {
     return (
       <ThemeProvider>
         <View style={styles.loadingContainer}>
@@ -48,31 +48,28 @@ const Router = () => {
     <>
       <ThemeProvider>
         <QueryClientProvider client={queryClient}>
-        
-
           <Stack.Navigator screenOptions={{ headerShown: false }}>
-            {/* {user.token ? (
-              <> */}
-            <Stack.Screen
-              name={ROUTES.MAIN_NAV}
-              component={MainNavigator}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name={ROUTES.PRODUCT_DETAISL}
-              component={ProductDetails}
-            />
-            {/* </>
+            {user.token ? (
+              <>
+                <Stack.Screen
+                  name={ROUTES.MAIN_NAV}
+                  component={MainNavigator}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name={ROUTES.PRODUCT_DETAISL}
+                  component={ProductDetails}
+                />
+              </>
             ) : (
               <Stack.Screen name={ROUTES.AUTH} component={AuthNavigator} />
-            )} */}
+            )}
           </Stack.Navigator>
         </QueryClientProvider>
       </ThemeProvider>
     </>
   );
 };
-
 
 const styles = StyleSheet.create({
   loadingContainer: {
@@ -82,6 +79,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
 });
-
 
 export default Router;

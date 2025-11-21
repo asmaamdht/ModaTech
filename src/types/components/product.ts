@@ -1,6 +1,8 @@
+import { Product } from "./home";
+
 export type RootStackParamList = {
   ProductScreen: {
-    product: IProductDetails;
+    product: Product;
   };
 };
 

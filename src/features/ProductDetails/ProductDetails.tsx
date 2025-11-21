@@ -2,10 +2,11 @@ import StyledButton from "@/src/components/StyledButton";
 import StyledText from "@/src/components/StyledText";
 import { useTheme } from "@/src/contexts/ThemeContext";
 import i18n from "@/src/locales/i18n";
-import {
-  IProductDetails,
-  RootStackParamList,
-} from "@/src/types/components/product";
+import { addToCart, saveCart } from "@/src/redux/Slice/cartSlice";
+import { AppDispatch } from "@/src/redux/store";
+import { ICart } from "@/src/types/components/cart";
+import { Product } from "@/src/types/components/home";
+import { RootStackParamList } from "@/src/types/components/product";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
@@ -25,6 +26,8 @@ import {
 } from "react-native-responsive-screen";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StarRatingDisplay } from "react-native-star-rating-widget";
+import Toast from "react-native-toast-message";
+import { useDispatch } from "react-redux";
 
 const ProductDetails = () => {
   const { t } = useTranslation();
@@ -33,7 +36,22 @@ const ProductDetails = () => {
   const navigation = useNavigation();
   const theme = useTheme();
   const isRTL = i18n.language === "ar";
-  const prod: IProductDetails = route?.product;
+  const prod: Product = route?.product;
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleAddToCart = (product: Product) => {
+    const cartItem: ICart = {
+      ...product,
+      productId: product.id,
+      quantity: 1,
+    };
+    dispatch(addToCart(cartItem));
+    dispatch(saveCart());
+    Toast.show({
+      type: "success",
+      text1: t("productAddedToCart"),
+    });
+  };
 
   return (
     <SafeAreaProvider>
@@ -91,7 +109,7 @@ const ProductDetails = () => {
             style={[styles.prodTitle, { color: theme.colors.text }]}
           />
           <StarRatingDisplay
-            rating={prod.rating.rate}
+            rating={prod.rating?.rate ?? 0}
             starSize={20}
             style={{ marginVertical: hp("1"), marginHorizontal: hp("-1") }}
           />
@@ -113,7 +131,7 @@ const ProductDetails = () => {
           </View>
           <StyledText
             style={[styles.desc, { color: theme.colors.text }]}
-            title={prod.description}
+            title={prod.description || ""}
           />
         </ScrollView>
         <StyledButton
@@ -125,7 +143,7 @@ const ProductDetails = () => {
               flexDirection: isRTL ? "row-reverse" : "row",
             },
           ]}
-          onPress={() => {}}
+          onPress={() => handleAddToCart(prod)}
           icon={
             <FontAwesome5 name="shopping-cart" size={hp("2")} color="white" />
           }

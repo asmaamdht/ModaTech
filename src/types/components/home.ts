@@ -3,15 +3,15 @@ import { TextInputProps } from "react-native";
 export interface Product {
   id: number;
   title: string;
+  description?: string;
   price: number;
   image: string;
   category: string;
-  rating?:{
-    rate:number;
-    count:number;
-  }
+  rating?: {
+    rate: number;
+    count: number;
+  };
 }
-
 
 export interface ProductCardProps {
   product: Product;
@@ -33,7 +33,6 @@ export interface HomeHeaderProps {
   };
 }
 
-
 export interface ProductsState {
   products: Product[];
   loading: boolean;
@@ -49,5 +48,3 @@ export interface LowestPriceProps {
   onPressItem?: (item: any) => void;
   isRTL: boolean;
 }
-
-
